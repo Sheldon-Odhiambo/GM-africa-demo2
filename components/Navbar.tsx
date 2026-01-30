@@ -11,8 +11,8 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onBookNow }) => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 
-      bg-white ${scrolled ? 'py-3 shadow-lg' : 'py-6'}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700
+        bg-white/80 backdrop-blur-md ${scrolled ? 'py-3 shadow-lg' : 'py-6'}`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
 
