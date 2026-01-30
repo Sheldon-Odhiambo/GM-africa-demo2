@@ -3,34 +3,26 @@ import React from 'react';
 
 export const Loader: React.FC = () => {
   return (
-    <div className="loader-container animate-loader-bg">
-      <div className="relative animate-[scale_2s_ease-in-out_infinite]">
-        {/* Outer ring */}
-        <div className="w-24 h-24 rounded-full border-4 border-amber-500/10 border-t-amber-500 animate-spin"></div>
-        {/* Inner logo placeholder */}
+    <div className="fixed inset-0 z-[100] bg-secondary flex flex-col items-center justify-center">
+      <div className="relative">
+        {/* Spinner */}
+        <div className="w-28 h-28 border-[6px] border-primary/20 border-t-primary rounded-full animate-spin"></div>
+        {/* Center Sunrise */}
         <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/50">
-                <i className="fa-solid fa-sun text-white animate-pulse"></i>
-            </div>
+          <div className="w-12 h-12 bg-primary rounded-full blur-[2px] animate-pulse flex items-center justify-center shadow-[0_0_40px_rgba(214,143,91,0.8)]">
+             <i className="fa-solid fa-zebra text-secondary text-sm"></i>
+          </div>
         </div>
       </div>
-      <div className="mt-8 text-center animate-fade-up">
-        <h2 className="text-white text-2xl font-black tracking-[0.3em] mb-2 drop-shadow-lg">GOODMORNING AFRICA</h2>
-        <p className="text-amber-500 font-bold text-xs uppercase tracking-widest opacity-80 mb-4">Elite Safari Experiences</p>
-        <div className="h-1 w-24 bg-white/10 mx-auto rounded-full overflow-hidden">
-            <div className="h-full bg-amber-500 w-full animate-[loaderSlide_1.5s_infinite]"></div>
+      <div className="mt-10 text-center">
+        <div className="overflow-hidden">
+          <h2 className="font-serif text-3xl text-white tracking-[0.3em] uppercase animate-slide-up">GOODMORNING</h2>
         </div>
+        <div className="overflow-hidden">
+          <h2 className="font-serif text-3xl text-primary tracking-[0.5em] uppercase animate-slide-up font-black" style={{ animationDelay: '0.2s' }}>AFRICA</h2>
+        </div>
+        <p className="mt-6 text-white/40 text-[10px] tracking-[0.6em] uppercase font-bold animate-pulse">Africa Awaits Your Discovery</p>
       </div>
-      <style>{`
-        @keyframes loaderSlide {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes scale {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.08); }
-        }
-      `}</style>
     </div>
   );
 };

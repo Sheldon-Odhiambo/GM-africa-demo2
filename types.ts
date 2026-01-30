@@ -17,7 +17,14 @@ export interface FleetItem {
   id: string;
   name: string;
   type: string;
+  capacity: string;
   image: string;
   hoverImage: string;
-  capacity: string;
+}
+
+export interface ContactInfo {
+  phone: string;
+  whatsapp: string;
+  location: string;
+  tiktok: string;
 }

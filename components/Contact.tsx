@@ -1,57 +1,118 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { CONTACT_INFO } from '../constants';
 
 export const Contact: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    service: 'Car Hire',
+    message: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleWhatsAppContact = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = `Hello Goodmorning Africa! 👋%0A%0AMessage from Website Contact Form:%0A👤 Name: ${formData.name}%0A📞 Phone: ${formData.phone}%0A🛠️ Service: ${formData.service}%0A💬 Message: ${formData.message}`;
+    const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${text}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
-    <section id="contact" className="py-24 bg-white relative z-20 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-up">
-          <span className="text-amber-500 font-black uppercase text-xs tracking-[0.3em] mb-4 block">— Reach Out —</span>
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">Let's Plan Your Trip</h2>
-          <div className="w-20 h-1.5 bg-amber-500 mx-auto rounded-full"></div>
-          <p className="text-slate-600 mt-8 max-w-2xl mx-auto text-lg font-medium leading-relaxed">
-            From car rentals to guided safaris across Kenya, our team is ready to provide top-tier support. Visit us or send a message today!
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-10 bg-slate-50 rounded-[3rem] text-center group hover:bg-white hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 border border-slate-100 animate-fade-up">
-            <div className="w-24 h-24 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8 transition-all group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white animate-float">
-              <i className="fa-solid fa-phone text-4xl"></i>
-            </div>
-            <h3 className="text-2xl font-black mb-3 text-slate-900">Direct Call</h3>
-            <p className="text-slate-600 font-bold tracking-tight text-xl mb-4">{CONTACT_INFO.phone}</p>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Available 8 AM - 6 PM</p>
-          </div>
-
-          <div className="p-10 bg-white rounded-[3rem] text-center border-4 border-amber-500 shadow-2xl scale-105 relative overflow-hidden group hover:bg-amber-50 transition-all duration-500 animate-fade-up stagger-1">
-            <div className="absolute top-0 right-0 p-6">
-                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(34,197,94,1)]"></div>
-            </div>
-            <div className="w-24 h-24 bg-amber-50 text-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-8 transition-all group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white animate-wiggle">
-              <i className="fa-brands fa-whatsapp text-5xl"></i>
-            </div>
-            <h3 className="text-2xl font-black mb-3 text-slate-900">WhatsApp</h3>
-            <p className="text-slate-600 font-medium mb-8">Fastest response for safari bookings and urgent car hires.</p>
-            <a 
-                href={`https://wa.me/${CONTACT_INFO.whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-green-500 text-white px-10 py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-green-600 transition-all inline-block shadow-lg active:scale-95 border-b-4 border-green-700 hover:border-green-800"
-            >
-                Connect Now
-            </a>
-          </div>
-
-          <div className="p-10 bg-slate-50 rounded-[3rem] text-center group hover:bg-white hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 border border-slate-100 animate-fade-up stagger-2">
-            <div className="w-24 h-24 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mx-auto mb-8 transition-all group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white animate-float">
-              <i className="fa-solid fa-location-dot text-4xl"></i>
-            </div>
-            <h3 className="text-2xl font-black mb-3 text-slate-900">Our Office</h3>
-            <p className="text-slate-600 font-medium leading-relaxed px-4">
-              {CONTACT_INFO.location}<br/>Nakuru City, Kenya
+    <section id="contact" className="py-24 bg-slate-50 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div className="reveal">
+            <h2 className="text-primary font-bold uppercase tracking-[0.2em] text-sm mb-4">Contact Us</h2>
+            <h3 className="text-4xl md:text-5xl font-serif text-secondary mb-8">Get In Touch</h3>
+            <p className="text-secondary/60 mb-12 leading-relaxed">
+              Have questions about our fleet or ready to book your next safari? Our team is available 24/7 to assist you via WhatsApp for immediate response.
             </p>
+
+            <div className="space-y-8">
+              <div className="flex items-center gap-6 group">
+                <div className="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary text-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+                  <i className="fa-solid fa-phone group-hover:animate-bounce"></i>
+                </div>
+                <div>
+                  <span className="block text-secondary/50 text-xs uppercase tracking-widest mb-1">Call Us</span>
+                  <a href={`tel:${CONTACT_INFO.phone}`} className="text-xl font-bold text-secondary hover:text-primary transition-colors">{CONTACT_INFO.phone}</a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6 group">
+                <div className="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary text-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+                  <i className="fa-solid fa-location-dot group-hover:animate-pulse"></i>
+                </div>
+                <div>
+                  <span className="block text-secondary/50 text-xs uppercase tracking-widest mb-1">Our Office</span>
+                  <p className="text-xl font-bold text-secondary">{CONTACT_INFO.location}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6 group">
+                <div className="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary text-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+                  <i className="fa-brands fa-tiktok group-hover:rotate-12 transition-transform"></i>
+                </div>
+                <div>
+                  <span className="block text-secondary/50 text-xs uppercase tracking-widest mb-1">Follow Us</span>
+                  <a href={CONTACT_INFO.tiktok} className="text-xl font-bold text-secondary hover:text-primary transition-colors">@goodmorningafrica</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 md:p-12 rounded-[2.5rem] shadow-2xl border border-slate-100 reveal" style={{ transitionDelay: '200ms' }}>
+            <form className="space-y-6" onSubmit={handleWhatsAppContact}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Full Name</label>
+                  <input 
+                    required name="name" type="text" placeholder="John Doe" 
+                    value={formData.name} onChange={handleChange}
+                    className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Phone Number</label>
+                  <input 
+                    required name="phone" type="tel" placeholder="+254..." 
+                    value={formData.phone} onChange={handleChange}
+                    className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Service Type</label>
+                <select 
+                  name="service" value={formData.service} onChange={handleChange}
+                  className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all appearance-none"
+                >
+                  <option>Car Hire</option>
+                  <option>Airport Pickup</option>
+                  <option>Safari Tour</option>
+                  <option>Event Transport</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Message</label>
+                <textarea 
+                  required name="message" rows={4} placeholder="How can we help you?" 
+                  value={formData.message} onChange={handleChange}
+                  className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all resize-none"
+                ></textarea>
+              </div>
+              <button 
+                type="submit"
+                className="w-full bg-[#25D366] text-white font-bold uppercase tracking-[0.2em] py-5 rounded-2xl hover:bg-[#128C7E] transition-all duration-300 shadow-xl flex items-center justify-center gap-3"
+              >
+                <i className="fa-brands fa-whatsapp text-2xl"></i>
+                Send to WhatsApp
+              </button>
+            </form>
           </div>
         </div>
       </div>

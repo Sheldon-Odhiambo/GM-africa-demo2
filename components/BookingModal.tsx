@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { CONTACT_INFO } from '../constants';
+
+import React, { useState, useEffect } from 'react';
+import { CONTACT_INFO, SERVICES, FLEET } from '../constants';
 
 interface BookingModalProps {
   selectedService: string;
@@ -9,180 +10,127 @@ interface BookingModalProps {
 export const BookingModal: React.FC<BookingModalProps> = ({ selectedService, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     date: '',
-    passengers: '1',
-    serviceType: selectedService || 'Safari Tour',
-    details: ''
+    passengers: '',
+    requirements: ''
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const serviceDetail = SERVICES.find(s => s.title === selectedService) || 
+                  FLEET.find(f => `Vehicle Hire: ${f.name}` === selectedService);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
   };
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    if (formData.name.trim().length < 2) {
-      newErrors.name = 'Please enter a valid name (min. 2 characters)';
-    }
-    
-    const selectedDate = new Date(formData.date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    if (!formData.date) {
-      newErrors.date = 'Please select a date';
-    } else if (selectedDate < today) {
-      newErrors.date = 'Date cannot be in the past';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleWhatsAppRedirect = (e: React.FormEvent) => {
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    // Generate a unique booking reference
-    const bookingRef = `GMA-${Date.now().toString().slice(-6)}`;
-    
-    const message = `*GOODMORNING AFRICA BOOKING*%0A` +
-      `----------------------------%0A` +
-      `*Booking Ref:* ${bookingRef}%0A` +
-      `*Service Type:* ${formData.serviceType}%0A` +
-      `*Customer Name:* ${formData.name}%0A` +
-      `*Date:* ${formData.date}%0A` +
-      `*Passengers:* ${formData.passengers}%0A` +
-      `*Additional Details:* ${formData.details || 'None provided'}%0A` +
-      `----------------------------%0A` +
-      `Hello! I'm interested in booking with Goodmorning Africa. Please assist.`;
-
+    const message = `Hello Goodmorning Africa! 👋%0A%0AI would like to make a booking for:%0A*${selectedService || 'General Inquiry'}*%0A%0A*Booking Details:*%0A👤 Name: ${formData.name}%0A📞 Phone: ${formData.phone}%0A📅 Date: ${formData.date}%0A👥 Passengers: ${formData.passengers}%0A📝 Requirements: ${formData.requirements || 'None'}%0A%0APlease let me know the availability. Thanks!`;
     const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${message}`;
-    
     window.open(whatsappUrl, '_blank');
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center px-4">
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-slate-900/80 backdrop-blur-md transition-all"
-        onClick={onClose}
-      ></div>
-
-      {/* Modal Content */}
-      <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto">
-        <div className="bg-amber-500 p-8 text-white relative sticky top-0 z-10">
-          <button 
-            onClick={onClose}
-            className="absolute top-8 right-8 text-white hover:rotate-90 transition-transform duration-300"
-          >
-            <i className="fa-solid fa-xmark text-2xl"></i>
-          </button>
-          <h2 className="text-2xl font-black mb-1">Secure Your Adventure</h2>
-          <p className="text-amber-50 font-bold text-xs uppercase tracking-widest opacity-90">Goodmorning Africa Safaris</p>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-secondary/95 backdrop-blur-xl" onClick={onClose}></div>
+      <div className="relative w-full max-w-4xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-scale-in flex flex-col md:flex-row max-h-[90vh]">
+        
+        {/* Detail Image/Info Side */}
+        <div className="md:w-5/12 relative bg-secondary overflow-hidden min-h-[250px] md:min-h-full">
+          {serviceDetail ? (
+            <>
+              <img 
+                src={serviceDetail.image} 
+                alt={selectedService} 
+                className="absolute inset-0 w-full h-full object-cover opacity-60"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <span className="inline-block bg-primary text-secondary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4">
+                  Authentic Experience
+                </span>
+                <h4 className="text-3xl font-serif mb-3 leading-tight uppercase">{selectedService}</h4>
+                <p className="text-white/70 text-sm leading-relaxed font-light italic">
+                  {('description' in serviceDetail ? serviceDetail.description : '') || 'Premium transport solutions tailored to your journey across the beautiful African landscape.'}
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-secondary">
+               <i className="fa-solid fa-sun-bright text-primary text-6xl mb-6 opacity-40 animate-pulse"></i>
+               <h4 className="text-2xl font-serif text-white mb-4">Africa Awaits</h4>
+               <p className="text-white/50 text-sm">Tell us your destination and we will take you there in style.</p>
+            </div>
+          )}
         </div>
 
-        <form onSubmit={handleWhatsAppRedirect} className="p-8 space-y-5">
-          <div>
-            <label className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Full Name</label>
-            <input
-              type="text"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleInputChange}
-              placeholder="Your Name"
-              className={`w-full px-5 py-3 rounded-xl border-2 transition-all outline-none font-bold text-slate-900 ${
-                errors.name ? 'border-red-500 focus:border-red-500' : 'border-slate-100 focus:border-amber-500'
-              }`}
-            />
-            {errors.name && <p className="text-red-500 text-[10px] mt-1 font-bold uppercase">{errors.name}</p>}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Service Type</label>
-              <select
-                name="serviceType"
-                required
-                value={formData.serviceType}
-                onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-xl border-2 border-slate-100 focus:border-amber-500 transition-all outline-none font-bold text-slate-900 bg-white"
-              >
-                <option value="Safari Tour">Safari Tour</option>
-                <option value="Airport Transfer">Airport Transfer</option>
-                <option value="Car Hire">Car Hire</option>
-                <option value="Event Transport">Event Transport</option>
-                <option value="Hotel Booking">Hotel Booking</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Passengers</label>
-              <input
-                type="number"
-                name="passengers"
-                min="1"
-                max="50"
-                required
-                value={formData.passengers}
-                onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-xl border-2 border-slate-100 focus:border-amber-500 transition-all outline-none font-bold text-slate-900"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Preferred Date</label>
-            <input
-              type="date"
-              name="date"
-              required
-              value={formData.date}
-              onChange={handleInputChange}
-              className={`w-full px-5 py-3 rounded-xl border-2 transition-all outline-none font-bold text-slate-900 ${
-                errors.date ? 'border-red-500 focus:border-red-500' : 'border-slate-100 focus:border-amber-500'
-              }`}
-            />
-            {errors.date && <p className="text-red-500 text-[10px] mt-1 font-bold uppercase">{errors.date}</p>}
-          </div>
-
-          <div>
-            <label className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Additional Details</label>
-            <textarea
-              name="details"
-              rows={2}
-              value={formData.details}
-              onChange={handleInputChange}
-              placeholder="e.g. Flight number, pickup location..."
-              className="w-full px-5 py-3 rounded-xl border-2 border-slate-100 focus:border-amber-500 transition-all outline-none resize-none font-bold text-slate-900"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-xl shadow-xl flex items-center justify-center gap-4 transition-all active:scale-95 border-b-4 border-green-800"
-          >
-            <i className="fa-brands fa-whatsapp text-2xl"></i>
-            Confirm via WhatsApp
+        {/* Booking Form Side */}
+        <div className="md:w-7/12 p-8 md:p-12 overflow-y-auto">
+          <button className="absolute top-6 right-6 text-secondary/30 hover:text-secondary transition-colors" onClick={onClose}>
+            <i className="fa-solid fa-xmark text-2xl"></i>
           </button>
           
-          <p className="text-center text-[10px] text-slate-400 font-black uppercase tracking-widest">
-            Instant Redirect to WhatsApp Support
-          </p>
-        </form>
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-secondary mb-1">Secure Your Trip</h3>
+            <p className="text-primary uppercase tracking-widest text-[10px] font-black">Direct WhatsApp Booking</p>
+          </div>
+
+          <form className="space-y-4" onSubmit={handleWhatsAppSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-secondary/60 uppercase tracking-widest mb-2 ml-1">Your Name</label>
+                <input 
+                  required name="name" type="text" placeholder="Full Name" 
+                  value={formData.name} onChange={handleInputChange}
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-secondary/60 uppercase tracking-widest mb-2 ml-1">Phone</label>
+                <input 
+                  required name="phone" type="tel" placeholder="Mobile Number" 
+                  value={formData.phone} onChange={handleInputChange}
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-secondary/60 uppercase tracking-widest mb-2 ml-1">Travel Date</label>
+                <input 
+                  required name="date" type="date" 
+                  value={formData.date} onChange={handleInputChange}
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-secondary/60 uppercase tracking-widest mb-2 ml-1">Pax</label>
+                <input 
+                  required name="passengers" type="number" placeholder="Count" 
+                  value={formData.passengers} onChange={handleInputChange}
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-secondary/60 uppercase tracking-widest mb-2 ml-1">Details</label>
+              <textarea 
+                name="requirements" placeholder="Safari preferences or special needs..." 
+                rows={2} value={formData.requirements} onChange={handleInputChange}
+                className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary outline-none transition-all resize-none"
+              ></textarea>
+            </div>
+
+            <button type="submit" className="w-full bg-secondary text-white font-black uppercase tracking-[0.2em] py-5 rounded-2xl hover:bg-primary transition-all duration-300 flex items-center justify-center gap-3 mt-6 shadow-xl shadow-secondary/10">
+              <i className="fa-brands fa-whatsapp text-2xl text-[#25D366]"></i>
+              Confirm & Connect
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

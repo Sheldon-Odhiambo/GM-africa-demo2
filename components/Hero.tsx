@@ -17,65 +17,69 @@ export const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
   }, []);
 
   return (
-    <section id="home" className="relative h-screen flex items-center overflow-hidden">
-      {/* Dynamic Background Image Slider */}
-      <div className="absolute inset-0 z-0">
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+      {/* 
+        Fixed Background Implementation:
+        The 'fixed' position ensures the container is relative to the viewport.
+        Removing 'scale' and 'transform' transitions to satisfy the 'should not move' requirement.
+      */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
         {HERO_BACKGROUNDS.map((bg, index) => (
-          <img
+          <div 
             key={bg}
-            src={bg}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1500 ${
-              index === currentBg ? 'opacity-100' : 'opacity-0'
-            } scale-105 animate-[pulse_15s_infinite_alternate]`}
-            alt="Majestic African Landscape"
-          />
+            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${index === currentBg ? 'opacity-100' : 'opacity-0'}`}
+            style={{ 
+              backgroundImage: `url('${bg}')`,
+            }}
+          ></div>
         ))}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+        {/* Dynamic Multi-directional Gradient for depth and readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/40 to-secondary lg:bg-gradient-to-r lg:from-secondary/90 lg:via-secondary/50 lg:to-transparent"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl">
-          <div className="animate-fade-up">
-            <span className="inline-block bg-amber-500 text-white px-5 py-1.5 rounded-full text-xs font-black tracking-[0.2em] uppercase mb-6 shadow-xl shadow-amber-500/30">
-              Welcome to the wild
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 w-full pt-32 pb-20">
+        <div className="max-w-4xl">
+          <div className="overflow-hidden mb-6">
+            <span className="inline-block bg-primary/20 text-primary border border-primary/50 px-5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] animate-slide-up" style={{ animationFillMode: 'forwards' }}>
+              Explore Kenya in Style
             </span>
-            <h1 className="text-5xl md:text-8xl font-black text-white mb-6 leading-[0.9] drop-shadow-2xl">
-              GOODMORNING<br/>
-              <span className="text-amber-500">AFRICA</span>
+          </div>
+          
+          <div className="overflow-hidden mb-8">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.1] animate-slide-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+              The Ultimate <br />
+              <span className="text-primary italic">Travel</span> Experience.
             </h1>
           </div>
-          
-          <p className="text-xl text-slate-100 mb-8 max-w-2xl font-medium leading-relaxed animate-fade-up stagger-1 drop-shadow-lg">
-            Where every sunrise brings a new adventure. Experience elite car hire and breathtaking safaris across Kenya's iconic savanna with the travel masters.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-up stagger-2">
-            <button
-              onClick={onBookNow}
-              className="bg-amber-500 text-white px-10 py-5 rounded-2xl text-lg font-black hover:bg-amber-600 hover:scale-105 active:scale-95 transition-all transform hover:-translate-y-1 shadow-2xl flex items-center justify-center gap-3 group border-b-4 border-amber-700 hover:border-amber-800"
-            >
-              <i className="fa-solid fa-calendar-check group-hover:rotate-12 transition-transform"></i>
-              Book Your Adventure
-            </button>
-            <a
-              href="#services"
-              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-5 rounded-2xl text-lg font-black hover:bg-white/20 hover:scale-105 transition-all text-center flex items-center justify-center"
-            >
-              View Packages
-            </a>
-          </div>
-          
-          <div className="mt-12 flex items-center gap-6 animate-fade-up stagger-3">
-            <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map(i => (
-                    <img key={i} src={`https://i.pravatar.cc/100?img=${i+35}`} className="w-12 h-12 rounded-full border-2 border-amber-500 shadow-xl" alt="Customer" />
-                ))}
-            </div>
-            <p className="text-slate-100 text-sm font-bold tracking-tight">
-                Trusted by <span className="text-amber-500">5,000+</span> elite explorers
+
+          <div className="overflow-hidden mb-12">
+            <p className="text-white/70 text-lg md:text-xl max-w-xl leading-relaxed font-light animate-slide-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+              Luxury car hire, professional airport transfers, and breathtaking safari tours. We redefine transportation in the heart of Nakuru.
             </p>
           </div>
+
+          <div className="flex flex-col sm:flex-row gap-5 animate-slide-up opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
+            <button 
+              onClick={onBookNow}
+              className="group bg-primary text-secondary px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-2xl shadow-primary/20 flex items-center justify-center gap-3"
+            >
+              Start Your Journey
+              <i className="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+            </button>
+            <a 
+              href="#fleet"
+              className="px-10 py-5 rounded-2xl border border-white/30 text-white font-bold uppercase tracking-widest hover:bg-white/10 transition-all duration-300 backdrop-blur-sm text-center"
+            >
+              View Our Fleet
+            </a>
+          </div>
         </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+        <span className="text-white/20 text-[10px] uppercase tracking-[0.4em] font-bold">Scroll</span>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent animate-bounce"></div>
       </div>
     </section>
   );

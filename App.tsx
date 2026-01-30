@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -17,20 +18,41 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate initial loading for cinematic feel
+    // Initial loading
     const timer = setTimeout(() => {
         setIsLoading(false);
-    }, 2000);
+    }, 1800);
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+
+    // Scroll reveal observer
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
     window.addEventListener('scroll', handleScroll);
+    
+    if (!isLoading) {
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    }
+
     return () => {
         window.removeEventListener('scroll', handleScroll);
         clearTimeout(timer);
+        revealObserver.disconnect();
     };
-  }, []);
+  }, [isLoading]);
 
   const handleBookService = (serviceTitle: string) => {
     setSelectedService(serviceTitle);
@@ -42,15 +64,27 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-white animate-scale-in">
+    <div className="relative min-h-screen bg-white selection:bg-primary selection:text-secondary">
       <Navbar scrolled={scrolled} onBookNow={() => handleBookService('')} />
       
       <main>
         <Hero onBookNow={() => handleBookService('')} />
-        <Services onBookService={handleBookService} />
-        <Fleet />
-        <About />
-        <Contact />
+        
+        <div className="reveal">
+          <Services onBookService={handleBookService} />
+        </div>
+        
+        <div className="reveal">
+          <Fleet onBookVehicle={handleBookService} />
+        </div>
+        
+        <div className="reveal">
+          <About />
+        </div>
+        
+        <div className="reveal">
+          <Contact />
+        </div>
       </main>
 
       <Footer />
