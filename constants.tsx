@@ -3,31 +3,30 @@ import React from 'react';
 import { Service, NavItem, FleetItem, ContactInfo } from './types';
 
 export const Logo: React.FC<{ className?: string, dark?: boolean }> = ({ className, dark }) => (
-  <div className={`flex items-center gap-4 group transition-all duration-500 ${className}`}>
-    {/* Icon Part: Recreating the Sun + Zebra aesthetic */}
-    <div className="relative flex items-center justify-center">
-      <div className={`relative w-14 h-14 flex items-center justify-center rounded-full transition-all duration-500 group-hover:scale-110`}>
-        {/* Sun Element */}
-        <div className={`absolute -left-2 w-10 h-10 rounded-full ${dark ? 'bg-primary' : 'bg-primary'} opacity-80 animate-pulse`}></div>
-        {/* Zebra Placeholder / Sunrays - Replicating the shape from image */}
-        <div className="relative z-10 text-secondary text-3xl transform -rotate-12">
-           <i className={`fa-solid fa-zebra ${dark ? 'text-secondary' : 'text-white'}`}></i>
-        </div>
-      </div>
-    </div>
+  <div className={`flex items-center gap-3 group transition-all duration-500 ${className}`}>
+    {/* Logo Image Placeholder - Represents the Safari Brand */}
+    <div className="h-12 flex items-center">
+              <img
+                src="/images/logo-removebg-preview.png"
+                alt="Company Logo"
+                className="h-16 w-auto object-contain scale-[1.4] lg:scale-[1.8] origin-left"
+              />
+            </div>
     
-    {/* Text Part: Hierarchical layout from image */}
-    <div className="flex flex-col">
-      <span className={`text-[10px] tracking-[0.3em] font-sans font-extrabold uppercase leading-none ${dark ? 'text-secondary/60' : 'text-white/60'}`}>Good Morning</span>
+    {/* Text Layout */}
+    {/* <div className="flex flex-col">
+      <span className={`text-[8px] md:text-[9px] tracking-[0.2em] font-sans font-black uppercase leading-none ${dark ? 'text-secondary' : 'text-white'}`}>
+        GOOD MORNING
+      </span>
       <div className="flex flex-col">
-        <span className={`text-2xl md:text-3xl font-serif font-black tracking-tighter leading-none uppercase ${dark ? 'text-secondary' : 'text-white'}`}>
-          <span className="text-primary italic">F</span>RICA
+        <span className={`text-xl md:text-2xl font-serif font-black tracking-[-0.02em] leading-tight uppercase ${dark ? 'text-secondary' : 'text-white'}`}>
+          AFRICA
         </span>
-        <span className={`text-[8px] tracking-[0.4em] font-sans font-black uppercase leading-none mt-1 ${dark ? 'text-primary' : 'text-primary'}`}>
-          Tours & Safaris
+        <span className={`text-[7px] md:text-[8px] tracking-[0.3em] font-sans font-black uppercase leading-none mt-0.5 text-primary`}>
+          TOURS & SAFARIS
         </span>
       </div>
-    </div>
+    </div> */}
   </div>
 );
 
@@ -41,44 +40,52 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const SERVICES: Service[] = [
   {
+    id: 'game-drives',
+    title: 'Game Drives',
+    description: 'Breathtaking wildlife adventures through Kenya\'s iconic parks like Maasai Mara and Amboseli.',
+    icon: 'fa-binoculars',
+    image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=800',
+    hoverImage: 'https://images.unsplash.com/photo-1523805081446-ed9a990d0df1?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 'group-travel',
+    title: 'Group Travel',
+    description: 'Perfectly coordinated group excursions for families, schools, and social clubs across East Africa.',
+    icon: 'fa-people-group',
+    image: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&q=80&w=800',
+    hoverImage: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 'corporate-travel',
+    title: 'Corporate Travel',
+    description: 'Professional transportation solutions for business meetings, staff retreats, and team building events.',
+    icon: 'fa-building-user',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800',
+    hoverImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
+  },
+  {
     id: 'car-hire',
-    title: 'Car Hire & Courtesy Cars',
-    description: 'A wide range of reliable vehicles for your personal or business needs.',
-    icon: 'fa-car-side',
+    title: 'Car Hire',
+    description: 'A premium range of reliable vehicles from compact cars to rugged 4x4s for your personal use.',
+    icon: 'fa-key',
     image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800'
+    hoverImage: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800'
   },
   {
-    id: 'airport',
-    title: 'Airport Pickups & Drop-offs',
-    description: 'Punctual and comfortable transfers to and from major airports.',
-    icon: 'fa-plane-departure',
-    image: 'https://images.unsplash.com/photo-1542296332-2e4473faf563?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 'bnb',
-    title: 'BnB & Hotel Accommodation',
-    description: 'We help you find the perfect stay across Kenya\'s best locations.',
-    icon: 'fa-house-chimney-window',
+    id: 'hotel-booking',
+    title: 'Hotel Booking',
+    description: 'We handle your accommodation needs, securing the best rates at top-tier hotels and luxury lodges.',
+    icon: 'fa-bed',
     image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800',
     hoverImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800'
   },
   {
-    id: 'events',
-    title: 'Events Transport',
-    description: 'Professional transportation for weddings, conferences, and special occasions.',
-    icon: 'fa-calendar-check',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 'tours',
-    title: 'Tours & Safaris',
-    description: 'Expert-guided tours to the Maasai Mara, Lake Nakuru, and beyond.',
-    icon: 'fa-binoculars',
-    image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&q=80&w=800'
+    id: 'executive-rides',
+    title: 'Executive Rides',
+    description: 'Luxury chauffeur-driven services for VIP guests, diplomats, and high-profile transfers.',
+    icon: 'fa-crown',
+    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800',
+    hoverImage: 'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&q=80&w=800'
   }
 ];
 
@@ -120,13 +127,14 @@ export const FLEET: FleetItem[] = [
 export const HERO_BACKGROUNDS = [
   'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=2000',
   'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&q=80&w=2000',
-  'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?auto=format&fit=crop&q=80&w=2000',
-  'https://images.unsplash.com/photo-1523805081446-ed9a990d0df1?auto=format&fit=crop&q=80&w=2000'
+  'https://images.unsplash.com/photo-1523805081446-ed9a990d0df1?auto=format&fit=crop&q=80&w=2000',
+  'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=2000'
 ];
 
 export const CONTACT_INFO: ContactInfo = {
   phone: '0729 488 606',
   whatsapp: '254729488606',
-  location: 'Nakuru City, Next to Goodmorning Africa Motors',
+  location: 'Nakuru City, Next to Sakinya Motors',
   tiktok: 'https://tiktok.com/@goodmorningafrica',
+  email: 'goodmorningafrica756@gmail.com'
 };
