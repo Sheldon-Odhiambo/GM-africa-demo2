@@ -2,54 +2,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Goodmorning Africa Tours | Premium Travel Kenya</title>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <title>Good Morning Africa | Tours &amp; Safaris</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" >
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+     <link rel="icon" type="image/png" sizes="112x112" href="/assets/logogm2-removebg-preview.png">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              // Exact colors extracted from the provided logo
-              primary: '#D68F5B', // Savanna Sun / Tan
-              secondary: '#3B2314', // Safari Brown
-              accent: '#F9F3E5', // Warm Beige for backgrounds
+              primary: '#e5ba5e',
+              secondary: '#4a321a',
+              accent: '#EF4444'
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
               serif: ['Playfair Display', 'serif'],
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.8s ease-out forwards',
-              'scale-in': 'scaleIn 0.5s ease-out forwards',
-              'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-              'float': 'float 3s ease-in-out infinite',
-              'wiggle': 'wiggle 0.5s ease-in-out infinite',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
-              },
-              scaleIn: {
-                '0%': { transform: 'scale(0.95)', opacity: '0' },
-                '100%': { transform: 'scale(1)', opacity: '1' },
-              },
-              slideUp: {
-                '0%': { transform: 'translateY(100px)', opacity: '0' },
-                '100%': { transform: 'translateY(0)', opacity: '1' },
-              },
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-10px)' },
-              },
-              wiggle: {
-                '0%, 100%': { transform: 'rotate(-3deg)' },
-                '50%': { transform: 'rotate(3deg)' },
-              }
             }
           }
         }
@@ -57,52 +28,27 @@
     </script>
     <style>
       html { scroll-behavior: smooth; }
-      .glass-effect {
-        background: rgba(59, 35, 20, 0.85); /* Safari Brown Base */
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(214, 143, 91, 0.1);
+      .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+      .reveal.active { opacity: 1; transform: translateY(0); }
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
       }
-      .reveal {
-        opacity: 0;
-        transform: translateY(40px);
-        transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-      }
-      .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      ::-webkit-scrollbar {
-        width: 10px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #3B2314;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #D68F5B;
-        border-radius: 10px;
-        border: 2px solid #3B2314;
-      }
-      .parallax-bg {
-        transform: translateY(var(--scroll-offset, 0px));
-        transition: transform 0.1s linear;
-      }
-      @media (min-width: 768px) and (max-width: 1024px) {
-        .hero-text { font-size: 5rem !important; }
-      }
+      .animate-float { animation: float 3s ease-in-out infinite; }
     </style>
   <script type="importmap">
 {
   "imports": {
     "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "jspdf": "https://esm.sh/jspdf@^4.1.0"
   }
 }
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-[#F9F3E5] text-secondary selection:bg-primary selection:text-white">
+  <body class="bg-white font-sans overflow-x-hidden">
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>

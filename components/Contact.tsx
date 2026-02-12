@@ -1,118 +1,65 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { CONTACT_INFO } from '../constants';
 
 export const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    service: 'Car Hire',
-    message: ''
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleWhatsAppContact = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = `Hello Goodmorning Africa! 👋%0A%0AMessage from Website Contact Form:%0A👤 Name: ${formData.name}%0A📞 Phone: ${formData.phone}%0A🛠️ Service: ${formData.service}%0A💬 Message: ${formData.message}`;
-    const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${text}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
   return (
-    <section id="contact" className="py-24 bg-slate-50 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div className="reveal">
-            <h2 className="text-primary font-bold uppercase tracking-[0.2em] text-sm mb-4">Contact Us</h2>
-            <h3 className="text-4xl md:text-5xl font-serif text-secondary mb-8">Get In Touch</h3>
-            <p className="text-secondary/60 mb-12 leading-relaxed">
-              Have questions about our fleet or ready to book your next safari? Our team is available 24/7 to assist you via WhatsApp for immediate response.
-            </p>
-
-            <div className="space-y-8">
-              <div className="flex items-center gap-6 group">
-                <div className="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary text-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
-                  <i className="fa-solid fa-phone group-hover:animate-bounce"></i>
+    <section id="contact" className="py-24 bg-white">
+      <div className="container mx-auto px-6">
+        <div className="bg-gray-50 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
+          <div className="lg:w-1/2 p-12 lg:p-20">
+            <h2 className="text-primary font-black tracking-[0.3em] uppercase text-sm mb-4">Contact Us</h2>
+            <h3 className="text-4xl font-serif font-black text-secondary mb-12 italic">Let's Plan Your Journey</h3>
+            
+            <div className="space-y-10">
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary shrink-0">
+                  <i className="fa-solid fa-location-dot text-2xl"></i>
                 </div>
                 <div>
-                  <span className="block text-secondary/50 text-xs uppercase tracking-widest mb-1">Call Us</span>
-                  <a href={`tel:${CONTACT_INFO.phone}`} className="text-xl font-bold text-secondary hover:text-primary transition-colors">{CONTACT_INFO.phone}</a>
+                  <h4 className="font-bold text-lg text-secondary">Our Office</h4>
+                  <p className="text-gray-500">{CONTACT_INFO.location}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary shrink-0">
+                  <i className="fa-solid fa-phone text-2xl"></i>
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg text-secondary">Call Us Directly</h4>
+                  <p className="text-gray-500">{CONTACT_INFO.phone}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-6 group">
-                <div className="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary text-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
-                  <i className="fa-solid fa-location-dot group-hover:animate-pulse"></i>
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary shrink-0">
+                  <i className="fa-solid fa-envelope text-2xl"></i>
                 </div>
                 <div>
-                  <span className="block text-secondary/50 text-xs uppercase tracking-widest mb-1">Our Office</span>
-                  <p className="text-xl font-bold text-secondary">{CONTACT_INFO.location}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6 group">
-                <div className="w-16 h-16 bg-white shadow-lg rounded-2xl flex items-center justify-center text-primary text-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
-                  <i className="fa-brands fa-tiktok group-hover:rotate-12 transition-transform"></i>
-                </div>
-                <div>
-                  <span className="block text-secondary/50 text-xs uppercase tracking-widest mb-1">Follow Us</span>
-                  <a href={CONTACT_INFO.tiktok} className="text-xl font-bold text-secondary hover:text-primary transition-colors">@goodmorningafrica</a>
+                  <h4 className="font-bold text-lg text-secondary">Email Inquiries</h4>
+                  <p className="text-gray-500">{CONTACT_INFO.email}</p>
                 </div>
               </div>
             </div>
+
+            <div className="mt-16 pt-10 border-t border-gray-200 flex gap-6">
+              <a href={CONTACT_INFO.tiktok} target="_blank" className="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                <i className="fa-brands fa-tiktok"></i>
+              </a>
+              <a href={`https://wa.me/${CONTACT_INFO.whatsapp}`} target="_blank" className="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center hover:bg-green-500 transition-colors">
+                <i className="fa-brands fa-whatsapp"></i>
+              </a>
+            </div>
           </div>
 
-          <div className="bg-white p-6 md:p-12 rounded-[2.5rem] shadow-2xl border border-slate-100 reveal" style={{ transitionDelay: '200ms' }}>
-            <form className="space-y-6" onSubmit={handleWhatsAppContact}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Full Name</label>
-                  <input 
-                    required name="name" type="text" placeholder="John Doe" 
-                    value={formData.name} onChange={handleChange}
-                    className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Phone Number</label>
-                  <input 
-                    required name="phone" type="tel" placeholder="+254..." 
-                    value={formData.phone} onChange={handleChange}
-                    className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" 
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Service Type</label>
-                <select 
-                  name="service" value={formData.service} onChange={handleChange}
-                  className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all appearance-none"
-                >
-                  <option>Car Hire</option>
-                  <option>Airport Pickup</option>
-                  <option>Safari Tour</option>
-                  <option>Event Transport</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-secondary uppercase tracking-widest mb-2">Message</label>
-                <textarea 
-                  required name="message" rows={4} placeholder="How can we help you?" 
-                  value={formData.message} onChange={handleChange}
-                  className="w-full bg-slate-50 border-0 rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all resize-none"
-                ></textarea>
-              </div>
-              <button 
-                type="submit"
-                className="w-full bg-[#25D366] text-white font-bold uppercase tracking-[0.2em] py-5 rounded-2xl hover:bg-[#128C7E] transition-all duration-300 shadow-xl flex items-center justify-center gap-3"
-              >
-                <i className="fa-brands fa-whatsapp text-2xl"></i>
-                Send to WhatsApp
-              </button>
-            </form>
+          <div className="lg:w-1/2 min-h-[400px] relative">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15959.034637731998!2d36.059437!3d-0.292926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298d92849e771d%3A0x6d11b51e0892095!2sNakuru%2C%20Kenya!5e0!3m2!1sen!2s!4v1700000000000" 
+              className="absolute inset-0 w-full h-full grayscale border-0"
+              allowFullScreen
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
       </div>

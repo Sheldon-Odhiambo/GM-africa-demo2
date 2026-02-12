@@ -27,4 +27,16 @@ export interface ContactInfo {
   whatsapp: string;
   location: string;
   tiktok: string;
+  email: string;
+}
+
+export interface BookingData {
+  reference?: string;
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  date: string;
+  passengers: number;
+  notes: string;
 }

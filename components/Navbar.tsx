@@ -1,122 +1,123 @@
-import React, { useState } from 'react';
-import { NAV_ITEMS, Logo } from '../constants';
 
-interface NavbarProps {
+import React, { useState } from 'react';
+import { Logo, NAV_ITEMS } from '../constants';
+
+interface Props {
   scrolled: boolean;
   onBookNow: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ scrolled, onBookNow }) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const Navbar: React.FC<Props> = ({ scrolled, onBookNow }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700
-        bg-white/80 backdrop-blur-md ${scrolled ? 'py-3 shadow-lg' : 'py-6'}`}
-    >
-      <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white shadow-xl py-2' : 'bg-transparent py-4 md:py-6'}`}>
+      <div className="container mx-auto px-4 md:px-6 flex items-center justify-between relative z-[60]">
+        <a href="#home" onClick={() => setMobileMenuOpen(false)}>
+          <Logo dark={scrolled} className="scale-90 md:scale-100 origin-left" />
+        </a>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="lg:hidden w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-300 bg-secondary text-primary"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Menu"
-        >
-          <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars-staggered'} text-xl`}></i>
-        </button>
-
-        {/* Brand Identity - Centered on Mobile */}
-        <div className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
-          <a
-            href="#home"
-            className="flex-shrink-0 block ml-6 lg:ml-10"
-          >
-            {/* Logo wrapper controls navbar height */}
-            <div className="h-12 flex items-center">
-              <img
-                src="/images/logo-removebg-preview.png"
-                alt="Company Logo"
-                className="h-16 w-auto object-contain scale-[1.4] lg:scale-[1.8] origin-left"
-              />
-            </div>
-          </a>
-        </div>
-
-        {/* Desktop Links */}
-        <div className="hidden lg:flex items-center gap-10">
-          {NAV_ITEMS.map((item) => (
+        {/* Desktop Nav */}
+        <div className="hidden lg:flex items-center gap-6">
+          {NAV_ITEMS.map(item => (
             <a 
-              key={item.href} 
-              href={item.href}
-              className="text-xs font-bold tracking-[0.2em] uppercase transition-all hover:text-primary relative group text-secondary"
+              key={item.label} 
+              href={item.href} 
+              className={`text-[11px] font-bold uppercase tracking-widest transition-colors hover:text-primary ${scrolled ? 'text-secondary' : 'text-white'}`}
             >
               {item.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
             </a>
           ))}
-
           <button 
             onClick={onBookNow}
-            className="bg-primary text-secondary px-8 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-secondary hover:text-white transition-all duration-500 shadow-xl shadow-primary/20"
+            className="px-6 py-2.5 bg-primary text-secondary font-black rounded-full hover:bg-secondary hover:text-primary active:scale-95 transition-all shadow-lg text-[10px] tracking-widest"
           >
-            Book Trip
+            BOOK NOW
           </button>
         </div>
 
-        {/* Mobile Right Icon */}
-        <div className="lg:hidden w-12 h-12 flex items-center justify-center">
-          <button onClick={onBookNow} className="text-xl text-secondary transition-colors">
-            <i className="fa-solid fa-calendar-check"></i>
+        {/* Mobile Actions Container */}
+        <div className="lg:hidden flex items-center gap-3">
+          {/* NEW: Mobile Quick Book Button */}
+          <button 
+            onClick={onBookNow}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full font-black text-[9px] uppercase tracking-widest transition-all shadow-lg active:scale-95 ${
+              scrolled 
+                ? 'bg-primary text-secondary' 
+                : 'bg-white/10 backdrop-blur-md border border-white/30 text-white'
+            }`}
+          >
+            <i className="fa-solid fa-calendar-check animate-pulse"></i>
+            Book
+          </button>
+
+          {/* Mobile Toggle Button */}
+          <button 
+            className={`flex items-center justify-center w-10 h-10 text-xl transition-all duration-300 ${scrolled ? 'text-secondary' : 'text-white'}`}
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open Menu"
+          >
+            <i className="fa-solid fa-bars-staggered"></i>
           </button>
         </div>
       </div>
 
-      {/* Mobile Fullscreen Overlay */}
-      <div
-        className={`lg:hidden fixed inset-0 z-[60] bg-secondary/95 backdrop-blur-2xl transition-all duration-700 ease-[cubic-bezier(0.85, 0, 0.15, 1)] 
-        ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
-      >
-        <div className="flex flex-col items-center justify-center h-full gap-12 px-6 relative">
-          
-          <button
-            className="absolute top-6 left-6 w-12 h-12 bg-white/5 rounded-2xl text-white text-2xl"
-            onClick={() => setIsOpen(false)}
+      {/* Mobile Menu Overlay */}
+      <div className={`lg:hidden fixed inset-0 bg-secondary transition-all duration-500 z-[70] ${mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>
+        {/* Mobile Menu Header */}
+        <div className="flex items-center justify-between px-6 py-4 md:py-6 border-b border-white/10">
+          <Logo dark={false} className="scale-90" />
+          <button 
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-2 text-primary group"
           >
-            <i className="fa-solid fa-xmark"></i>
+            <span className="text-[9px] font-black uppercase tracking-[0.3em] group-hover:mr-2 transition-all">Close</span>
+            <div className="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-secondary transition-all">
+              <i className="fa-solid fa-xmark text-lg"></i>
+            </div>
           </button>
+        </div>
 
-          {/* Mobile Logo */}
-          <Logo className="mb-4 scale-125" />
+        {/* Decorative Background for Mobile Menu */}
+        <div className="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] aspect-square border-[40px] border-primary rounded-full animate-pulse"></div>
+        </div>
 
-          <div className="flex flex-col items-center gap-4 w-full">
-            {NAV_ITEMS.map((item, idx) => (
+        <div className="flex flex-col justify-between h-[calc(100%-80px)] px-8 py-10 relative z-10 overflow-y-auto">
+          <div className="space-y-1">
+             <p className="text-primary/60 text-[9px] font-black uppercase tracking-[0.4em] mb-4">Explore Africa</p>
+             {NAV_ITEMS.map((item, idx) => (
               <a 
-                key={item.href} 
-                href={item.href}
-                className={`text-white text-3xl font-serif font-bold tracking-tight hover:text-primary transition-all duration-300 transform 
-                ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                style={{ transitionDelay: `${200 + idx * 100}ms` }}
-                onClick={() => setIsOpen(false)}
+                key={item.label} 
+                href={item.href} 
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-2xl font-serif font-black text-white hover:text-primary transition-all mb-4 hover:translate-x-4 transform duration-300"
+                style={{ transitionDelay: `${idx * 50}ms` }}
               >
                 {item.label}
               </a>
             ))}
           </div>
 
-          <button 
-            onClick={() => {
-              setIsOpen(false);
-              onBookNow();
-            }}
-            className="mt-8 bg-primary text-secondary px-12 py-5 rounded-2xl text-lg font-black uppercase tracking-[0.3em] hover:bg-white transition-all shadow-2xl"
-          >
-            Quick Booking
-          </button>
-
-          <div className="absolute bottom-12 flex gap-8 text-white/40 text-2xl">
-            <i className="fa-brands fa-facebook"></i>
-            <i className="fa-brands fa-instagram"></i>
-            <i className="fa-brands fa-tiktok"></i>
+          <div className="pt-8 border-t border-white/10 space-y-6">
+            <button 
+              onClick={() => { onBookNow(); setMobileMenuOpen(false); }}
+              className="w-full py-4 bg-primary text-secondary font-black rounded-2xl text-lg shadow-2xl hover:bg-white transition-all transform active:scale-95"
+            >
+              BOOK NOW
+            </button>
+            
+            <div className="flex justify-center gap-6 pb-4">
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-primary transition-colors">
+                <i className="fa-brands fa-whatsapp text-xl"></i>
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-primary transition-colors">
+                <i className="fa-brands fa-tiktok text-xl"></i>
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-primary transition-colors">
+                <i className="fa-solid fa-envelope text-xl"></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>

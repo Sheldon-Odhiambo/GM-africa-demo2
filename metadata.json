@@ -1,5 +1,7 @@
 {
-  "name": "Copy of Goodmorning Africa Tours",
-  "description": "Premium car rental and tour services based in Nakuru, Kenya, offering luxury sedans, SUVs, and safari packages.",
-  "requestFramePermissions": []
+  "name": "Good Morning Africa Tours & Safaris",
+  "description": "Professional car hire, airport transfers, and luxury safari bookings in Kenya. Features an integrated WhatsApp booking system and PDF receipt generation.",
+  "requestFramePermissions": [
+    "camera"
+  ]
 }

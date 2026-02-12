@@ -2,84 +2,92 @@
 import React, { useState, useEffect } from 'react';
 import { HERO_BACKGROUNDS } from '../constants';
 
-interface HeroProps {
+interface Props {
   onBookNow: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
-  const [currentBg, setCurrentBg] = useState(0);
+export const Hero: React.FC<Props> = ({ onBookNow }) => {
+  const [bgIndex, setBgIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentBg((prev) => (prev + 1) % HERO_BACKGROUNDS.length);
-    }, 5000);
-    return () => clearInterval(timer);
+    const interval = setInterval(() => {
+      setBgIndex(prev => (prev + 1) % HERO_BACKGROUNDS.length);
+    }, 6000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
-      {/* 
-        Fixed Background Implementation:
-        The 'fixed' position ensures the container is relative to the viewport.
-        Removing 'scale' and 'transform' transitions to satisfy the 'should not move' requirement.
-      */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        {HERO_BACKGROUNDS.map((bg, index) => (
+    <section id="home" className="relative h-screen flex items-center overflow-hidden">
+      {/* Fixed Background Slider */}
+      <div className="fixed inset-0 z-0">
+        {HERO_BACKGROUNDS.map((bg, idx) => (
           <div 
             key={bg}
-            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${index === currentBg ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute inset-0 transition-opacity duration-2000 ease-in-out ${idx === bgIndex ? 'opacity-100 scale-105' : 'opacity-0 scale-100'}`}
             style={{ 
-              backgroundImage: `url('${bg}')`,
+              backgroundImage: `url(${bg})`, 
+              backgroundSize: 'cover', 
+              backgroundPosition: 'center', 
+              backgroundAttachment: 'fixed',
+              transition: 'opacity 2s ease-in-out, transform 8s linear' 
             }}
-          ></div>
+          />
         ))}
-        {/* Dynamic Multi-directional Gradient for depth and readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/40 to-secondary lg:bg-gradient-to-r lg:from-secondary/90 lg:via-secondary/50 lg:to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-secondary/80 via-secondary/40 to-transparent" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 w-full pt-32 pb-20">
-        <div className="max-w-4xl">
-          <div className="overflow-hidden mb-6">
-            <span className="inline-block bg-primary/20 text-primary border border-primary/50 px-5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] animate-slide-up" style={{ animationFillMode: 'forwards' }}>
-              Explore Kenya in Style
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-4xl pt-24 md:pt-32">
+          {/* Badge moved down using mt-12 */}
+          <div className="flex items-center gap-3 mt-12 mb-6 animate-float">
+            <span className="px-3 py-1 bg-primary/20 backdrop-blur-md border border-primary/30 text-primary text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase rounded-full">
+              Trusted African Safaris
             </span>
           </div>
           
-          <div className="overflow-hidden mb-8">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.1] animate-slide-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-              The Ultimate <br />
-              <span className="text-primary italic">Travel</span> Experience.
-            </h1>
-          </div>
-
-          <div className="overflow-hidden mb-12">
-            <p className="text-white/70 text-lg md:text-xl max-w-xl leading-relaxed font-light animate-slide-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-              Luxury car hire, professional airport transfers, and breathtaking safari tours. We redefine transportation in the heart of Nakuru.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-5 animate-slide-up opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
+          <h1 className="text-4xl md:text-7xl font-serif font-black text-white leading-tight mb-6">
+            Experience the <br />
+            <span className="text-primary italic">Soul</span> of Kenya
+          </h1>
+          
+          <p className="text-base md:text-lg text-white/80 max-w-xl mb-10 leading-relaxed font-light">
+            From the roaring plains of the Maasai Mara to the vibrant city life of Nakuru, we provide premium transport and tailor-made safaris for the modern explorer.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
             <button 
               onClick={onBookNow}
-              className="group bg-primary text-secondary px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-2xl shadow-primary/20 flex items-center justify-center gap-3"
+              className="px-8 py-4 md:px-10 md:py-5 bg-primary text-secondary font-black rounded-full hover:bg-secondary hover:text-primary hover:scale-105 active:scale-95 transition-all shadow-2xl text-sm md:text-base flex items-center justify-center gap-3"
             >
-              Start Your Journey
-              <i className="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+              START YOUR ADVENTURE
+              <i className="fa-solid fa-arrow-right"></i>
             </button>
             <a 
-              href="#fleet"
-              className="px-10 py-5 rounded-2xl border border-white/30 text-white font-bold uppercase tracking-widest hover:bg-white/10 transition-all duration-300 backdrop-blur-sm text-center"
+              href="#services"
+              className="px-8 py-4 md:px-10 md:py-5 bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold rounded-full hover:bg-primary hover:text-secondary transition-all text-sm md:text-base text-center"
             >
-              View Our Fleet
+              OUR SERVICES
             </a>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-        <span className="text-white/20 text-[10px] uppercase tracking-[0.4em] font-bold">Scroll</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent animate-bounce"></div>
+      {/* Stats Overlay */}
+      <div className="absolute bottom-12 right-12 hidden lg:flex gap-10 bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl z-10">
+        <div className="text-center">
+          <p className="text-2xl font-black text-primary">150+</p>
+          <p className="text-[9px] text-white/60 tracking-widest uppercase">Destinations</p>
+        </div>
+        <div className="w-px h-10 bg-white/10" />
+        <div className="text-center">
+          <p className="text-2xl font-black text-primary">2.5k</p>
+          <p className="text-[9px] text-white/60 tracking-widest uppercase">Happy Travelers</p>
+        </div>
+        <div className="w-px h-10 bg-white/10" />
+        <div className="text-center">
+          <p className="text-2xl font-black text-primary">24/7</p>
+          <p className="text-[9px] text-white/60 tracking-widest uppercase">Support</p>
+        </div>
       </div>
     </section>
   );
