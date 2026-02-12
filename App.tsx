@@ -16,18 +16,17 @@ const App: React.FC = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [bookingStatus, setBookingStatus] = useState<string | null>(null);
 
   useEffect(() => {
-    // Initial loading
     const timer = setTimeout(() => {
         setIsLoading(false);
-    }, 1800);
+    }, 2000);
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
 
-    // Scroll reveal observer
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
@@ -54,9 +53,23 @@ const App: React.FC = () => {
     };
   }, [isLoading]);
 
+  // Handle auto-hiding the status message
+  useEffect(() => {
+    if (bookingStatus) {
+      const timer = setTimeout(() => {
+        setBookingStatus(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [bookingStatus]);
+
   const handleBookService = (serviceTitle: string) => {
     setSelectedService(serviceTitle);
     setIsBookingOpen(true);
+  };
+
+  const handleBookingComplete = (status: string) => {
+    setBookingStatus(status);
   };
 
   if (isLoading) {
@@ -64,7 +77,22 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-white selection:bg-primary selection:text-secondary">
+    <div className="relative min-h-screen bg-white selection:bg-primary selection:text-secondary overflow-x-hidden">
+      {/* Booking Status Notification */}
+      {bookingStatus && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="bg-secondary border-2 border-primary px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-4">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-secondary">
+              <i className="fa-solid fa-check font-bold"></i>
+            </div>
+            <div>
+              <p className="text-white font-black tracking-widest text-xs uppercase">{bookingStatus}</p>
+              <p className="text-primary/80 text-[10px] uppercase font-bold">Pending Confirmation</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Navbar scrolled={scrolled} onBookNow={() => handleBookService('')} />
       
       <main>
@@ -93,7 +121,8 @@ const App: React.FC = () => {
       {isBookingOpen && (
         <BookingModal 
           selectedService={selectedService} 
-          onClose={() => setIsBookingOpen(false)} 
+          onClose={() => setIsBookingOpen(false)}
+          onComplete={handleBookingComplete}
         />
       )}
     </div>
